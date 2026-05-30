@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <h1><%= organization.name %></h1>
+
+    <div class="organization-details">
+        <p><%= organization.description %></p>
+        <p><strong>Location:</strong> <%= organization.location %></p>
+    </div>
+
+    <hr>
+
+    <h2>Service Projects</h2>
+
+    <% if (projects.length === 0) { %>
+        <p>No projects found for this organization.</p>
+    <% } else { %>
+
+        <ul class="project-list">
+
+            <% projects.forEach(project => { %>
+
+                <li>
+                    <a href="/project/<%= project.id %>">
+                        <%= project.name %>
+                    </a>
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } %>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html>

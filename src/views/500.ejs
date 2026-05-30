@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || "Server Error" %></title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <div class="error-page">
+
+        <h1>500 - Server Error</h1>
+
+        <p>
+            Something went wrong on our side. Please try again later.
+        </p>
+
+        <a href="/" class="btn">
+            Go Back Home
+        </a>
+
+    </div>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html>

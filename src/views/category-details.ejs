@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <h1><%= category.name %></h1>
+
+    <hr>
+
+    <h2>Service Projects in this Category</h2>
+
+    <% if (projects.length === 0) { %>
+        <p>No projects found for this category.</p>
+    <% } else { %>
+
+        <ul class="project-list">
+
+            <% projects.forEach(project => { %>
+
+                <li>
+                    <a href="/project/<%= project.id %>">
+                        <%= project.name %>
+                    </a>
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } %>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html>
