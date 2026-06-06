@@ -1,0 +1,67 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1>Edit Category</h1>
+    <p>Update category information below.</p>
+  </section>
+
+  <!-- FLASH / ERROR MESSAGES -->
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert error">
+      <% errors.forEach(err => { %>
+        <p><%= err %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert success">
+      <% success.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- FORM -->
+  <section class="form-container">
+
+    <form action="/categories/edit/<%= category.id %>" method="POST">
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Category Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="<%= category.name %>"
+          required
+          minlength="2"
+        >
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          minlength="5"
+        ><%= category.description %></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn">
+        Update Category
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

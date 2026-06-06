@@ -1,0 +1,47 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1><%= organization.name %></h1>
+    <p>Organization Details</p>
+  </section>
+
+  <section class="detail-card">
+
+    <!-- Logo -->
+    <div class="detail-image">
+      <% if (organization.logo) { %>
+        <img src="<%= organization.logo %>" alt="<%= organization.name %>" style="width:120px; height:auto;">
+      <% } else { %>
+        <img src="/images/default.png" alt="No Logo" style="width:120px; height:auto;">
+      <% } %>
+    </div>
+
+    <!-- Info -->
+    <div class="detail-info">
+      <h2>Name</h2>
+      <p><%= organization.name %></p>
+
+      <h2>Description</h2>
+      <p><%= organization.description %></p>
+    </div>
+
+  </section>
+
+  <!-- ACTION BUTTONS -->
+  <section class="actions">
+
+    <a href="/organizations/edit/<%= organization.id %>" class="btn">
+      Edit
+    </a>
+
+    <a href="/organizations" class="btn secondary">
+      Back to List
+    </a>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

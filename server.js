@@ -3,6 +3,21 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// =========================
+// CRITICAL ERROR TRACKING
+// =========================
+// Since the database connection is hiding in your routes/services, 
+// these will catch and display whatever is killing the server on boot.
+process.on('unhandledRejection', (reason, p) => {
+  console.error('❌ CRITICAL UNHANDLED REJECTION AT:', p, 'REASON:', reason);
+  process.exit(1);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('❌ CRITICAL UNCAUGHT EXCEPTION:', error);
+  process.exit(1);
+});
+
 // Routes
 import organizationRoutes from "./src/routes/organizationRoutes.js";
 import projectRoutes from "./src/routes/projectRoutes.js";
@@ -29,6 +44,11 @@ app.set("views", path.join(__dirname, "src", "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // =========================
+// PARSE FORM DATA
+// =========================
+app.use(express.urlencoded({ extended: true }));
+
+// =========================
 // HOME ROUTE
 // =========================
 app.get("/", (req, res) => {
@@ -40,9 +60,9 @@ app.get("/", (req, res) => {
 // =========================
 // MVC ROUTES
 // =========================
-app.use(organizationRoutes);
-app.use(projectRoutes);
-app.use(categoryRoutes);
+app.use("/organizations", organizationRoutes);
+app.use("/projects", projectRoutes);
+app.use("/categories", categoryRoutes);
 
 // =========================
 // 404 ERROR HANDLER

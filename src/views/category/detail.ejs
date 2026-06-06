@@ -1,0 +1,32 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1><%= category.name %></h1>
+    <p>Category Details</p>
+  </section>
+
+  <section class="detail-card">
+
+    <h2>Description</h2>
+    <p><%= category.description %></p>
+
+  </section>
+
+  <!-- ACTION BUTTONS -->
+  <section class="actions">
+
+    <a href="/categories/edit/<%= category.id %>" class="btn">
+      Edit Category
+    </a>
+
+    <a href="/categories" class="btn secondary">
+      Back to Categories
+    </a>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

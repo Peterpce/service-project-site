@@ -1,0 +1,35 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+    <section class="page-header">
+        <h1>Organizations</h1>
+        <p>Discover organizations dedicated to making a positive impact in communities.</p>
+
+        <!-- CREATE BUTTON (NEW FOR CRUD) -->
+        <a href="/organizations/create" class="btn">+ Add Organization</a>
+    </section>
+
+    <section class="card-grid">
+
+        <% organizations.forEach(org => { %>
+            <div class="card">
+
+                <img src="<%= org.logo %>" alt="<%= org.name %>" style="width:80px; height:auto;">
+
+                <h2><%= org.name %></h2>
+
+                <p><%= org.description %></p>
+
+                <!-- ACTION BUTTONS -->
+                <a href="/organizations/<%= org.id %>">View</a>
+                <a href="/organizations/edit/<%= org.id %>">Edit</a>
+
+            </div>
+        <% }) %>
+
+    </section>
+
+</main>
+
+<%- include("../partials/footer") %>

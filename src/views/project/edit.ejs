@@ -1,0 +1,67 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1>Edit Project</h1>
+    <p>Update project information below.</p>
+  </section>
+
+  <!-- FLASH MESSAGES -->
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert error">
+      <% errors.forEach(err => { %>
+        <p><%= err %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert success">
+      <% success.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- FORM -->
+  <section class="form-container">
+
+    <form action="/projects/edit/<%= project.id %>" method="POST">
+
+      <!-- Project Name -->
+      <div class="form-group">
+        <label for="name">Project Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="<%= project.name %>"
+          required
+          minlength="3"
+        >
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          minlength="10"
+        ><%= project.description %></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn">
+        Update Project
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

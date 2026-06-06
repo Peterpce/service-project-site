@@ -1,0 +1,78 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1>Edit Organization</h1>
+    <p>Update organization details below.</p>
+  </section>
+
+  <!-- FLASH / ERROR MESSAGES -->
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert error">
+      <% errors.forEach(err => { %>
+        <p><%= err %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert success">
+      <% success.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- FORM -->
+  <section class="form-container">
+
+    <form action="/organizations/edit/<%= organization.id %>" method="POST">
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Organization Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          minlength="3"
+          value="<%= organization.name %>"
+        >
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          minlength="10"
+        ><%= organization.description %></textarea>
+      </div>
+
+      <!-- Logo -->
+      <div class="form-group">
+        <label for="logo">Logo URL</label>
+        <input
+          type="text"
+          id="logo"
+          name="logo"
+          value="<%= organization.logo %>"
+        >
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn">
+        Update Organization
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

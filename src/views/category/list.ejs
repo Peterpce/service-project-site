@@ -1,0 +1,35 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+    <section class="page-header">
+        <h1>Service Project Categories</h1>
+        <p>Browse service opportunities based on different areas of impact.</p>
+
+        <!-- CREATE BUTTON -->
+        <a href="/categories/create" class="btn">+ Add Category</a>
+    </section>
+
+    <section class="card-grid">
+
+        <% categories.forEach(category => { %>
+
+            <div class="card">
+
+                <h2><%= category.name %></h2>
+
+                <p><%= category.description %></p>
+
+                <!-- ACTION LINKS -->
+                <a href="/categories/<%= category.id %>">View</a>
+                <a href="/categories/edit/<%= category.id %>">Edit</a>
+
+            </div>
+
+        <% }) %>
+
+    </section>
+
+</main>
+
+<%- include("../partials/footer") %>

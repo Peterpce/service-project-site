@@ -1,0 +1,68 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1>Create Project</h1>
+    <p>Add a new service project.</p>
+  </section>
+
+  <!-- FLASH MESSAGES -->
+  <% if (error && error.length > 0) { %>
+    <div class="alert error">
+      <% error.forEach(err => { %>
+        <p><%= err %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert success">
+      <% success.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- FORM -->
+  <section class="form-container">
+
+    <form action="/projects/create" method="POST">
+
+      <!-- Project Name -->
+      <div class="form-group">
+        <label for="name">Project Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          minlength="3"
+          placeholder="Enter project name"
+        >
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          minlength="10"
+          placeholder="Enter project description"
+        ></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn">
+        Create Project
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>

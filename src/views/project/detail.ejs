@@ -1,0 +1,48 @@
+<%- include("../partials/header", { title: title }) %>
+
+<main class="container">
+
+  <section class="page-header">
+    <h1><%= project.name %></h1>
+    <p>Project Details</p>
+  </section>
+
+  <section class="detail-card">
+
+    <h2>Description</h2>
+    <p><%= project.description %></p>
+
+    <h3>Assigned Categories</h3>
+
+    <% if (categories && categories.length > 0) { %>
+      <ul>
+        <% categories.forEach(category => { %>
+          <li><%= category.name %></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No categories assigned yet.</p>
+    <% } %>
+
+  </section>
+
+  <!-- ACTION BUTTONS -->
+  <section class="actions">
+
+    <a href="/projects/edit/<%= project.id %>" class="btn">
+      Edit Project
+    </a>
+
+    <a href="/projects/assign-category/<%= project.id %>" class="btn">
+      Assign Categories
+    </a>
+
+    <a href="/projects" class="btn secondary">
+      Back to Projects
+    </a>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>
