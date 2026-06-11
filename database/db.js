@@ -1,29 +1,24 @@
-import pkg from "pg";
+import pg from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const { Pool } = pkg;
+const { Pool } = pg;
 
-// Create PostgreSQL connection pool
-const pool = new Pool({
+const db = new Pool({
   connectionString: process.env.DATABASE_URL,
-
-  // Required for Render PostgreSQL
-  ssl:
-    process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: false }
-      : false,
+  ssl: process.env.DATABASE_URL.includes("localhost") 
+    ? false 
+    : { rejectUnauthorized: false }
 });
 
-// Test database connection
-pool.connect()
-  .then((client) => {
-    console.log("Connected to PostgreSQL database");
-    client.release();
+// Test connection cleanly
+db.query("SELECT NOW()")
+  .then(() => {
+    console.log("🚀 Connected to PostgreSQL database successfully!");
   })
   .catch((err) => {
-    console.error("Database connection error:", err.message);
+    console.error("❌ Database query failed:", err.message);
   });
 
-export default pool;
+export default db;
