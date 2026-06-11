@@ -1,0 +1,42 @@
+<%- include('../partials/header') %>
+
+<h1>Registered Users</h1>
+
+<!-- Flash message -->
+<% if (message && message.length > 0) { %>
+  <p style="color:red;"><%= message %></p>
+<% } %>
+
+<table border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if (users && users.length > 0) { %>
+      <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.role %></td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="4">No users found</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<br />
+
+<a href="/dashboard">← Back to Dashboard</a>
+
+<%- include('../partials/footer') %>
