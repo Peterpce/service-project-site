@@ -8,13 +8,13 @@ export async function registerUser(req, res, next) {
   try {
     const { name, email, password } = req.body;
 
-    // basic validation
+    // validation
     if (!name || !email || !password) {
       req.flash("message", "All fields are required");
       return res.redirect("/register");
     }
 
-    // check if user already exists
+    // check existing user
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
       req.flash("message", "User already exists");
@@ -24,7 +24,7 @@ export async function registerUser(req, res, next) {
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // create user (default role = user)
+    // create user
     await createUser(name, email, hashedPassword, "user");
 
     req.flash("message", "Registration successful. Please login.");
@@ -41,11 +41,13 @@ export async function loginUser(req, res, next) {
   try {
     const { email, password } = req.body;
 
+    // validation
     if (!email || !password) {
-      req.flash("message", "Email and password required");
+      req.flash("message", "Email and password are required");
       return res.redirect("/login");
     }
 
+    // find user
     const user = await findUserByEmail(email);
 
     if (!user) {
@@ -53,7 +55,7 @@ export async function loginUser(req, res, next) {
       return res.redirect("/login");
     }
 
-    // compare password
+    // verify password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -69,7 +71,13 @@ export async function loginUser(req, res, next) {
       role: user.role
     };
 
-    res.redirect("/dashboard");
+    req.flash("message", "Login successful");
+
+    // IMPORTANT: ensure session is saved before redirect
+    req.session.save(() => {
+      res.redirect("/dashboard");
+    });
+
   } catch (error) {
     next(error);
   }

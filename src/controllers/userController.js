@@ -11,9 +11,9 @@ export async function getUsersPage(req, res, next) {
     res.render("users/list", {
       title: "Registered Users",
       users,
-      user: req.session.user, // for dashboard/nav role checks
-      message: req.flash("message")
+      message: req.flash("message")[0] || null
     });
+
   } catch (error) {
     next(error);
   }
