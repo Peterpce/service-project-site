@@ -73,10 +73,9 @@ export async function loginUser(req, res, next) {
 
     req.flash("message", "Login successful");
 
-    // IMPORTANT: ensure session is saved before redirect
-    // Changed redirect from "/dashboard" to "/user" to match your userRoutes setup
+    // FIXED: Changed redirect back to "/dashboard" to target the correct view route
     req.session.save(() => {
-      res.redirect("/user"); 
+      res.redirect("/dashboard"); 
     });
 
   } catch (error) {

@@ -10,6 +10,11 @@ import session from "express-session";
 import flash from "connect-flash";
 
 // =========================
+// DATABASE SYNC AUTOMATION
+// =========================
+import { initializeUserTable } from "./src/models/userModel.js"; 
+
+// =========================
 // CRITICAL ERROR TRACKING
 // =========================
 process.on("unhandledRejection", (reason, p) => {
@@ -41,10 +46,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // =========================
-// VIEW ENGINE
+// VIEW ENGINE (FIXED)
 // =========================
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "src", "views"));
+app.set("views", [
+  path.join(__dirname, "src", "views"),
+  path.join(__dirname, "src", "views", "users") // 🔥 Allows looking directly inside the users folder
+]);
 
 // =========================
 // STATIC FILES
@@ -55,7 +63,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // BODY PARSING (FIX APPLIED HERE)
 // =========================
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // 🔥 FIX: prevents req.body undefined error
+app.use(express.json()); 
 
 // =========================
 // SESSION
@@ -128,8 +136,11 @@ app.use((err, req, res, next) => {
 });
 
 // =========================
-// START SERVER
+// START SERVER (UPDATED TO ASYNC)
 // =========================
-app.listen(port, () => {
+app.listen(port, async () => { 
   console.log(`Server running on port ${port}`);
+
+  // Automatically verifies/creates the users table and inserts your admin data
+  await initializeUserTable(); 
 });

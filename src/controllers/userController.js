@@ -6,8 +6,8 @@ import { getAllUsers } from "../models/userModel.js";
  */
 export async function getDashboardPage(req, res, next) {
   try {
-    // FIXED: Changed "user/dashboard" to "users/dashboard" to match your plural folder structure
-    res.render("users/dashboard", { 
+    // Express now handles the folder path automatically!
+    res.render("dashboard", { 
       title: "Dashboard",
       user: req.session.user,
       message: req.flash("message")[0] || null
@@ -25,7 +25,8 @@ export async function getUsersPage(req, res, next) {
   try {
     const users = await getAllUsers();
 
-    res.render("users/list", {
+    // Express now handles the folder path automatically!
+    res.render("list", {
       title: "Registered Users",
       users,
       message: req.flash("message")[0] || null
