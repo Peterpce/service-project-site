@@ -48,7 +48,7 @@ export async function getCategoryById(req, res, next) {
 export function showCreateForm(req, res) {
     res.render("category/create", {
         title: "Create Category",
-        errors: [] // ✅ FIX ADDED
+        errors: [] 
     });
 }
 
@@ -66,10 +66,12 @@ export async function showEditForm(req, res, next) {
             });
         }
 
+        // Updated to pass 'success' variable required by edit.ejs line 19
         res.render("category/edit", {
             title: "Edit Category",
             category,
-            errors: [] // ✅ FIX ADDED
+            errors: [],
+            success: null // ✅ FIX ADDED HERE
         });
 
     } catch (error) {
