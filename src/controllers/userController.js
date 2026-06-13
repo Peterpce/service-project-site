@@ -6,8 +6,8 @@ import { getAllUsers } from "../models/userModel.js";
  */
 export async function getDashboardPage(req, res, next) {
   try {
-    // Renders your dashboard view, passing the logged-in user's session data
-    res.render("user/dashboard", { 
+    // FIXED: Changed "user/dashboard" to "users/dashboard" to match your plural folder structure
+    res.render("users/dashboard", { 
       title: "Dashboard",
       user: req.session.user,
       message: req.flash("message")[0] || null
