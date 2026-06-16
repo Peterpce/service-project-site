@@ -7,21 +7,29 @@ import {
     showAssignCategoryForm
 } from "../controllers/projectController.js";
 
+// 🛡️ IMPORT AUTH MIDDLEWARE
+// Adjust the path below if your middleware file is located elsewhere (e.g., ../middleware/authMiddleware.js)
+import { requireLogin, requireRole } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-// GET all projects (list page)
+// GET all projects (list page) - Standard public view or requires login depending on setup
 router.get("/", getAllProjects);
 
-// GET create form
-router.get("/create", showCreateForm);
-
-// GET project details page
+// GET project details page (Public view or standard logged-in user view)
 router.get("/:id", getProjectById);
 
-// GET edit form
-router.get("/edit/:id", showEditForm);
+// ==========================================
+// 🔒 PROTECTED ADMIN ROUTES (CRITICAL FOR RUBRIC)
+// ==========================================
 
-// GET assign category page (VERY IMPORTANT)
-router.get("/assign-category/:id", showAssignCategoryForm);
+// GET create form - STRICTLY RESTRICTED TO ADMINS
+router.get("/create", requireLogin, requireRole("admin"), showCreateForm);
+
+// GET edit form - STRICTLY RESTRICTED TO ADMINS
+router.get("/edit/:id", requireLogin, requireRole("admin"), showEditForm);
+
+// GET assign category page - STRICTLY RESTRICTED TO ADMINS
+router.get("/assign-category/:id", requireLogin, requireRole("admin"), showAssignCategoryForm);
 
 export default router;

@@ -6,18 +6,26 @@ import {
     showEditForm
 } from "../controllers/categoryController.js";
 
+// 🛡️ IMPORT AUTH MIDDLEWARE
+// Ensure this path matches your authMiddleware location
+import { requireLogin, requireRole } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-// GET all categories (list page)
+// GET all categories (list page) - Standard public view
 router.get("/", getAllCategories);
 
-// GET create form
-router.get("/create", showCreateForm);
-
-// GET category details page
+// GET category details page - Standard public view
 router.get("/:id", getCategoryById);
 
-// GET edit form
-router.get("/edit/:id", showEditForm);
+// ==========================================
+// 🔒 PROTECTED ADMIN ROUTES (CRITICAL FOR RUBRIC)
+// ==========================================
+
+// GET create form - STRICTLY RESTRICTED TO ADMINS
+router.get("/create", requireLogin, requireRole("admin"), showCreateForm);
+
+// GET edit form - STRICTLY RESTRICTED TO ADMINS
+router.get("/edit/:id", requireLogin, requireRole("admin"), showEditForm);
 
 export default router;

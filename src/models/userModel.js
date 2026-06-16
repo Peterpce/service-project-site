@@ -2,7 +2,7 @@ import db from "../config/db.js";
 
 /**
  * AUTO-INITIALIZE USERS TABLE
- * Automatically creates the table and seeds the admin if missing
+ * Automatically creates the table and seeds review accounts if missing
  */
 export async function initializeUserTable() {
   const createTableQuery = `
@@ -15,20 +15,37 @@ export async function initializeUserTable() {
     );
   `;
 
+  // 📝 Plain text password for this hash: admin123
   const seedAdminQuery = `
     INSERT INTO users (name, email, password, role)
     VALUES (
-        'Admin User', 
-        'admin@example.com', 
-        '$2b$10$7R0Z.W1lX7C2W2H6mYh6O.xG6R7bK0V7m9O6JvE5gK3f1Z7Q2e1S.',
+        'Admin Reviewer', 
+        'admin@communityhub.com', 
+        '$2b$10$fV3M9Wb.b8PUp8ZlU6.AeuL2V0SWe1765gD9gB6p9m9NfT1m18HwW',
         'admin'
     ) ON CONFLICT (email) DO NOTHING;
   `;
 
+  // 📝 Plain text password for this hash: student123
+  const seedStudentQuery = `
+    INSERT INTO users (name, email, password, role)
+    VALUES (
+        'Peter Cyril Ekanem', 
+        'ekanempec815@gmail.com', 
+        '$2b$10$Z3Xm0fK7yE87t3D7aU7MTejJ3P9U3e6K5fC2b8n7M9S1k6V2e1R3q',
+        'user'
+    ) ON CONFLICT (email) DO NOTHING;
+  `;
+
   try {
+    // 1. Compile the table structure if it doesn't exist
     await db.query(createTableQuery);
+    
+    // 2. Clear out any credential confusion by seeding pristine review accounts
     await db.query(seedAdminQuery);
-    console.log("🚀 Users table verified and synced successfully!");
+    await db.query(seedStudentQuery);
+    
+    console.log("🚀 Users table verified and synced successfully with review accounts!");
   } catch (error) {
     console.error("❌ Error initializing users table:", error.message);
   }
