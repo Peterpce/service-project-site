@@ -9,10 +9,12 @@ import { fileURLToPath } from "url";
 import helmet from "helmet"; 
 
 // =========================
-// SESSION + FLASH
+// SESSION + FLASH + DATABASE STORE
 // =========================
 import session from "express-session";
 import flash from "connect-flash";
+import pgSession from "connect-pg-simple"; // ✨ ADDED: Persistent database session store
+import db from "./src/config/db.js";        // ✨ ADDED: Import your database connection pool
 
 // =========================
 // DATABASE SYNC AUTOMATION
@@ -80,12 +82,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
 
 // ==========================================
-// 🔒 SECURE SESSION COOKIES
+// 🔒 SECURE SESSION COOKIES (PERSISTENT PG STORE)
 // ==========================================
 app.set("trust proxy", 1); 
 
+const PostgresStore = pgSession(session);
+
 app.use(
   session({
+    // ✨ FIXED: Saves sessions inside PostgreSQL instead of unstable process memory
+    store: new PostgresStore({
+      pool: db,                  // Passing your database pool connection instance
+      tableName: "session",      // Saves records inside a 'session' database table
+      createTableIfMissing: true // Automatically compiles table structure if missing
+    }),
     secret: process.env.SESSION_SECRET || "super-secret-fallback-key",
     resave: false,
     saveUninitialized: false,
@@ -93,6 +103,7 @@ app.use(
       secure: process.env.NODE_ENV === "production" || process.env.RENDER === "true",
       httpOnly: true, 
       sameSite: "lax", 
+      maxAge: 30 * 60 * 1000 // Session auto-expires cleanly after 30 minutes
     }
   })
 );
@@ -109,7 +120,7 @@ app.use((req, res, next) => {
   // Pass the logged-in user profile data to EJS templates
   res.locals.user = req.session.user || null;
   
-  // ✨ FIXED: Pull the flash message array and store it globally so views can read it
+  // Pull the flash message array and store it globally so views can read it
   res.locals.message = req.flash("message")[0] || null;
   
   next();
