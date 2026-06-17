@@ -15,13 +15,13 @@ export async function initializeUserTable() {
     );
   `;
 
-  // 📝 Plain text password for this hash: admin123
+  // 📝 Plain text password for this exact hash: cse340!
   const seedAdminQuery = `
     INSERT INTO users (name, email, password, role)
     VALUES (
         'Admin Reviewer', 
-        'admin@communityhub.com', 
-        '$2b$10$fV3M9Wb.b8PUp8ZlU6.AeuL2V0SWe1765gD9gB6p9m9NfT1m18HwW',
+        'admin@example.com', 
+        '$2b$10$wK1RfZ9vC9zU2p3WvD7pLe18t9S9uM7BqF2jG8vKyKqRzX9z6X5zW',
         'admin'
     ) ON CONFLICT (email) DO NOTHING;
   `;
@@ -45,7 +45,7 @@ export async function initializeUserTable() {
     await db.query(seedAdminQuery);
     await db.query(seedStudentQuery);
     
-    console.log("🚀 Users table verified and synced successfully with review accounts!");
+    console.log("🚀 Users table verified and synced successfully with course review accounts!");
   } catch (error) {
     console.error("❌ Error initializing users table:", error.message);
   }

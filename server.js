@@ -1,4 +1,4 @@
-import express from "express"; // ✨ FIXED: Added explicit express import
+import express from "express"; 
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 // =========================
 // SECURITY + HELMET
 // =========================
-import helmet from "helmet"; // ✨ ADDED: Helmet security middleware
+import helmet from "helmet"; 
 
 // =========================
 // SESSION + FLASH
@@ -53,10 +53,9 @@ const __dirname = path.dirname(__filename);
 // ==========================================
 // 🛡️ SECURITY HEADERS (CRITICAL FOR RED FLAGS)
 // ==========================================
-// Sets secure HTTP headers to protect against automated scanners and exploits
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Set to false if your EJS views use external CDN styles/scripts
+    contentSecurityPolicy: false, 
   })
 );
 
@@ -83,7 +82,6 @@ app.use(express.json());
 // ==========================================
 // 🔒 SECURE SESSION COOKIES
 // ==========================================
-// Trust proxy is required if you are deploying to Render behind their reverse proxy
 app.set("trust proxy", 1); 
 
 app.use(
@@ -92,10 +90,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      // Automatically enforces HTTPS secure cookies only when running live on Render
       secure: process.env.NODE_ENV === "production" || process.env.RENDER === "true",
-      httpOnly: true, // Prevents cross-site scripting cookie theft
-      sameSite: "lax", // Protects against CSRF attacks
+      httpOnly: true, 
+      sameSite: "lax", 
     }
   })
 );
@@ -105,11 +102,16 @@ app.use(
 // =========================
 app.use(flash());
 
-// =========================
-// GLOBAL USER ACCESS
-// =========================
+// ==========================================
+// 🔓 GLOBAL USER ACCESS & ALERTS (FIXED)
+// ==========================================
 app.use((req, res, next) => {
+  // Pass the logged-in user profile data to EJS templates
   res.locals.user = req.session.user || null;
+  
+  // ✨ FIXED: Pull the flash message array and store it globally so views can read it
+  res.locals.message = req.flash("message")[0] || null;
+  
   next();
 });
 
