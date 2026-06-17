@@ -13,8 +13,8 @@ import helmet from "helmet";
 // =========================
 import session from "express-session";
 import flash from "connect-flash";
-import pgSession from "connect-pg-simple"; // ✨ ADDED: Persistent database session store
-import db from "./src/config/db.js";        // ✨ ADDED: Import your database connection pool
+import pgSession from "connect-pg-simple"; 
+import db from "./src/config/db.js";        
 
 // =========================
 // DATABASE SYNC AUTOMATION
@@ -88,14 +88,22 @@ app.set("trust proxy", 1);
 
 const PostgresStore = pgSession(session);
 
+// ✨ FIXED: Configured store explicitly with an active database error handler
+const sessionStore = new PostgresStore({
+  pool: db,                  
+  tableName: "session",      
+  createTableIfMissing: true,
+  pruneSessionInterval: 60   // Automatically clears out stale sessions every 60 seconds
+});
+
+// Avoids application startup blockage if PostgreSQL bottlenecks momentarily
+sessionStore.on("error", (error) => {
+  console.error("❌ SESSION STORE ASYNC DB ERROR:", error);
+});
+
 app.use(
   session({
-    // ✨ FIXED: Saves sessions inside PostgreSQL instead of unstable process memory
-    store: new PostgresStore({
-      pool: db,                  // Passing your database pool connection instance
-      tableName: "session",      // Saves records inside a 'session' database table
-      createTableIfMissing: true // Automatically compiles table structure if missing
-    }),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || "super-secret-fallback-key",
     resave: false,
     saveUninitialized: false,
@@ -103,7 +111,7 @@ app.use(
       secure: process.env.NODE_ENV === "production" || process.env.RENDER === "true",
       httpOnly: true, 
       sameSite: "lax", 
-      maxAge: 30 * 60 * 1000 // Session auto-expires cleanly after 30 minutes
+      maxAge: 30 * 60 * 1000 // 30 Minute active session windows
     }
   })
 );
@@ -117,12 +125,8 @@ app.use(flash());
 // 🔓 GLOBAL USER ACCESS & ALERTS (FIXED)
 // ==========================================
 app.use((req, res, next) => {
-  // Pass the logged-in user profile data to EJS templates
   res.locals.user = req.session.user || null;
-  
-  // Pull the flash message array and store it globally so views can read it
   res.locals.message = req.flash("message")[0] || null;
-  
   next();
 });
 
@@ -166,7 +170,6 @@ app.use((req, res) => {
 // =========================
 app.use((err, req, res, next) => {
   console.error(err.stack);
-
   res.status(500).render("500", {
     title: "Server Error"
   });
@@ -178,6 +181,10 @@ app.use((err, req, res, next) => {
 app.listen(port, async () => { 
   console.log(`Server running on port ${port}`);
 
-  // Automatically verifies/creates the users table and inserts your admin data
-  await initializeUserTable(); 
+  try {
+    // Automatically verifies/creates the users table and inserts your admin data
+    await initializeUserTable(); 
+  } catch (err) {
+    console.error("⚠️ Post-bind database initialization warning:", err.message);
+  }
 });
