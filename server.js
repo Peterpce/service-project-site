@@ -86,24 +86,23 @@ app.use(express.json());
 // ==========================================
 app.set("trust proxy", 1); 
 
+// ✨ FIXED: One single, clean initialization wrapper for connect-pg-simple
 const PostgresStore = pgSession(session);
-
-// ✨ FIXED: Configured store explicitly with an active database error handler
-const sessionStore = new PostgresStore({
+const databaseSessionStore = new PostgresStore({
   pool: db,                  
   tableName: "session",      
   createTableIfMissing: true,
-  pruneSessionInterval: 60   // Automatically clears out stale sessions every 60 seconds
+  pruneSessionInterval: 60   
 });
 
-// Avoids application startup blockage if PostgreSQL bottlenecks momentarily
-sessionStore.on("error", (error) => {
+// Capture background database store issues gracefully
+databaseSessionStore.on("error", (error) => {
   console.error("❌ SESSION STORE ASYNC DB ERROR:", error);
 });
 
 app.use(
   session({
-    store: sessionStore,
+    store: databaseSessionStore, // ✨ FIXED: Linked correctly to the definition above
     secret: process.env.SESSION_SECRET || "super-secret-fallback-key",
     resave: false,
     saveUninitialized: false,
@@ -111,7 +110,7 @@ app.use(
       secure: process.env.NODE_ENV === "production" || process.env.RENDER === "true",
       httpOnly: true, 
       sameSite: "lax", 
-      maxAge: 30 * 60 * 1000 // 30 Minute active session windows
+      maxAge: 30 * 60 * 1000 
     }
   })
 );
