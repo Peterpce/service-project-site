@@ -22,7 +22,7 @@ import db from "./src/config/db.js";
 import { initializeUserTable } from "./src/models/userModel.js"; 
 
 // =========================
-// MIDDLEWARE IMPORTS (FIXED)
+// MIDDLEWARE IMPORTS
 // =========================
 import { requireLogin } from "./src/middleware/authMiddleware.js";
 
@@ -58,7 +58,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ==========================================
-// 🛡️ SECURITY HEADERS (CRITICAL FOR RED FLAGS)
+// 🛡️ SECURITY HEADERS
 // ==========================================
 app.use(
   helmet({
@@ -67,13 +67,10 @@ app.use(
 );
 
 // =========================
-// VIEW ENGINE (FIXED)
+// VIEW ENGINE CONFIGURATION
 // =========================
 app.set("view engine", "ejs");
-app.set("views", [
-  path.join(__dirname, "src", "views"),
-  path.join(__dirname, "src", "views", "users") 
-]);
+app.set("views", path.join(__dirname, "src", "views"));
 
 // =========================
 // STATIC FILES
@@ -124,12 +121,13 @@ app.use(
 app.use(flash());
 
 // ==========================================
-// 🔓 GLOBAL USER ACCESS & ALERTS (DYNAMIC FIX)
+// 🔓 GLOBAL VIEW ENGINE DATA INTERCEPTOR
 // ==========================================
 app.use((req, res, next) => {
+  // Fixes layout crashes by injecting user context into ALL views globally
   res.locals.user = req.session.user || null;
   
-  // Captures multiple common flash keys so messages won't drop silently
+  // Maps all potential flash structures straight to the layout locals
   res.locals.notice = req.flash("notice")[0] || null;
   res.locals.error = req.flash("error")[0] || null;
   res.locals.success = req.flash("success")[0] || null;
@@ -147,19 +145,20 @@ app.get("/", (req, res) => {
   });
 });
 
-// =========================
-// AUTH ROUTES (Must remain public)
-// =========================
+// ==========================================
+// 🛠️ APPLIES MVC BASE ROUTING FOR DOMAINS
+// ==========================================
+
+// Auth handles public registration/login forms natively
 app.use("/", authRoutes);
 
-// =========================
-// PROTECTED MVC ROUTES (FIXED)
-// =========================
-// ✨ FIX: Mounted 'requireLogin' from authMiddleware.js to protect restricted areas
-app.use("/", requireLogin, userRoutes);
-app.use("/organizations", requireLogin, organizationRoutes);
-app.use("/projects", requireLogin, projectRoutes);
-app.use("/categories", requireLogin, categoryRoutes);
+// User domain controls dashboard/lists which inside require explicit logins
+app.use("/", userRoutes);
+
+// Base paths are open publicly; admin filters run inside the router files!
+app.use("/organizations", organizationRoutes);
+app.use("/projects", projectRoutes);
+app.use("/categories", categoryRoutes);
 
 // =========================
 // 404

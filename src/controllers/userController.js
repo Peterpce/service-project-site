@@ -6,11 +6,10 @@ import { getAllUsers } from "../models/userModel.js";
  */
 export async function getDashboardPage(req, res, next) {
   try {
-    // Express now handles the folder path automatically!
     res.render("dashboard", { 
       title: "Dashboard",
-      user: req.session.user,
-      message: req.flash("message")[0] || null
+      user: req.session.user
+      // ✨ locals.error / locals.success / locals.message are handled globally by server.js now!
     });
   } catch (error) {
     next(error);
@@ -19,17 +18,16 @@ export async function getDashboardPage(req, res, next) {
 
 /**
  * ADMIN: GET ALL USERS
- * Only accessible by admin (protected in routes via middleware)
+ * Only accessible by admin
  */
 export async function getUsersPage(req, res, next) {
   try {
     const users = await getAllUsers();
 
-    // Express now handles the folder path automatically!
-    res.render("list", {
+    res.render("users/list", {
       title: "Registered Users",
       users,
-      message: req.flash("message")[0] || null
+      user: req.session.user
     });
 
   } catch (error) {
