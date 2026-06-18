@@ -143,6 +143,44 @@ footer {
     margin-top: 2rem;
 }
 
+/* ==========================================
+     ✨ FLASH ALERTS STYLING
+   ========================================== */
+.alert-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Red Error Alert */
+.alert-error {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #f8b4b4;
+}
+
+/* Blue Notice / Info Alert */
+.alert-notice, .alert-info {
+    background-color: #e1effe;
+    color: #1e429f;
+    border: 1px solid #b3d1ff;
+}
+
+/* Green Success Alert */
+.alert-success {
+    background-color: #ebfbf2;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
 

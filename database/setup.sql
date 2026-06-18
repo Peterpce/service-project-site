@@ -39,19 +39,34 @@ CREATE TABLE project_categories (
 );
 
 -- =========================
--- SAMPLE DATA (OPTIONAL BUT HELPFUL)
+-- USERS TABLE
+-- =========================
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'client'
+);
+
+-- =========================
+-- SAMPLE DATA & SEEDING
 -- =========================
 
+-- Organizations
 INSERT INTO organizations (name, description, location)
 VALUES 
 ('Helping Hands', 'Community service organization', 'Lagos'),
 ('Green Earth', 'Environmental protection group', 'Abuja');
 
+-- Projects
 INSERT INTO projects (name, description, start_date, end_date, organization_id)
 VALUES
 ('Clean Water Project', 'Providing clean water to villages', '2025-01-01', '2025-06-01', 1),
 ('Tree Planting Drive', 'Planting trees across cities', '2025-02-01', '2025-07-01', 2);
 
+-- Categories
 INSERT INTO categories (name)
 VALUES
 ('Health'),
@@ -65,3 +80,13 @@ VALUES
 (1, 1),
 (1, 4),
 (2, 2);
+
+-- Seed Admin User (Password hash corresponds to 'cse340!')
+INSERT INTO users (first_name, last_name, email, password, role)
+VALUES (
+    'Admin', 
+    'User', 
+    'admin@example.com', 
+    '$2b$10$f3889p2g6yFp7B76bB8Cbu9C.S0A7g65RHeM0y34q8.a1yF2Yp3F.', 
+    'admin'
+);

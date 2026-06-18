@@ -22,6 +22,11 @@ import db from "./src/config/db.js";
 import { initializeUserTable } from "./src/models/userModel.js"; 
 
 // =========================
+// MIDDLEWARE IMPORTS (FIXED)
+// =========================
+import { requireLogin } from "./src/middleware/authMiddleware.js";
+
+// =========================
 // CRITICAL ERROR TRACKING
 // =========================
 process.on("unhandledRejection", (reason, p) => {
@@ -86,7 +91,6 @@ app.use(express.json());
 // ==========================================
 app.set("trust proxy", 1); 
 
-// ✨ FIXED: One single, clean initialization wrapper for connect-pg-simple
 const PostgresStore = pgSession(session);
 const databaseSessionStore = new PostgresStore({
   pool: db,                  
@@ -95,14 +99,13 @@ const databaseSessionStore = new PostgresStore({
   pruneSessionInterval: 60   
 });
 
-// Capture background database store issues gracefully
 databaseSessionStore.on("error", (error) => {
   console.error("❌ SESSION STORE ASYNC DB ERROR:", error);
 });
 
 app.use(
   session({
-    store: databaseSessionStore, // ✨ FIXED: Linked correctly to the definition above
+    store: databaseSessionStore, 
     secret: process.env.SESSION_SECRET || "super-secret-fallback-key",
     resave: false,
     saveUninitialized: false,
@@ -116,16 +119,22 @@ app.use(
 );
 
 // =========================
-// FLASH
+// FLASH MIDDLEWARE
 // =========================
 app.use(flash());
 
 // ==========================================
-// 🔓 GLOBAL USER ACCESS & ALERTS (FIXED)
+// 🔓 GLOBAL USER ACCESS & ALERTS (DYNAMIC FIX)
 // ==========================================
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
-  res.locals.message = req.flash("message")[0] || null;
+  
+  // Captures multiple common flash keys so messages won't drop silently
+  res.locals.notice = req.flash("notice")[0] || null;
+  res.locals.error = req.flash("error")[0] || null;
+  res.locals.success = req.flash("success")[0] || null;
+  res.locals.message = req.flash("message")[0] || null; 
+  
   next();
 });
 
@@ -139,21 +148,18 @@ app.get("/", (req, res) => {
 });
 
 // =========================
-// AUTH ROUTES
+// AUTH ROUTES (Must remain public)
 // =========================
 app.use("/", authRoutes);
 
 // =========================
-// USER ROUTES (ADMIN)
+// PROTECTED MVC ROUTES (FIXED)
 // =========================
-app.use("/", userRoutes);
-
-// =========================
-// MVC ROUTES
-// =========================
-app.use("/organizations", organizationRoutes);
-app.use("/projects", projectRoutes);
-app.use("/categories", categoryRoutes);
+// ✨ FIX: Mounted 'requireLogin' from authMiddleware.js to protect restricted areas
+app.use("/", requireLogin, userRoutes);
+app.use("/organizations", requireLogin, organizationRoutes);
+app.use("/projects", requireLogin, projectRoutes);
+app.use("/categories", requireLogin, categoryRoutes);
 
 // =========================
 // 404
@@ -175,13 +181,12 @@ app.use((err, req, res, next) => {
 });
 
 // =========================
-// START SERVER (UPDATED TO ASYNC)
+// START SERVER (ASYNC)
 // =========================
 app.listen(port, async () => { 
   console.log(`Server running on port ${port}`);
 
   try {
-    // Automatically verifies/creates the users table and inserts your admin data
     await initializeUserTable(); 
   } catch (err) {
     console.error("⚠️ Post-bind database initialization warning:", err.message);
