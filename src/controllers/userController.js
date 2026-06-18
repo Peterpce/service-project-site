@@ -8,7 +8,8 @@ export async function getDashboardPage(req, res, next) {
   try {
     res.render("dashboard", { 
       title: "Dashboard",
-      user: req.session.user
+      user: req.session.user,
+      message: req.flash("message")[0] || null
     });
   } catch (error) {
     next(error);
@@ -23,11 +24,11 @@ export async function getUsersPage(req, res, next) {
   try {
     const users = await getAllUsers();
 
-    // ✨ FIXED: Point explicitly to the "users/list" subfolder view path
+    // ✨ UPDATED: Pointed explicitly to the "users/list" subfolder view path
     res.render("users/list", {
       title: "Registered Users",
       users,
-      user: req.session.user
+      message: req.flash("message")[0] || null
     });
 
   } catch (error) {
