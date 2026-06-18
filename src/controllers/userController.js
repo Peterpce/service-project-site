@@ -9,7 +9,6 @@ export async function getDashboardPage(req, res, next) {
     res.render("dashboard", { 
       title: "Dashboard",
       user: req.session.user
-      // ✨ locals.error / locals.success / locals.message are handled globally by server.js now!
     });
   } catch (error) {
     next(error);
@@ -18,12 +17,13 @@ export async function getDashboardPage(req, res, next) {
 
 /**
  * ADMIN: GET ALL USERS
- * Only accessible by admin
+ * Only accessible by admin (protected in routes via middleware)
  */
 export async function getUsersPage(req, res, next) {
   try {
     const users = await getAllUsers();
 
+    // ✨ FIXED: Point explicitly to the "users/list" subfolder view path
     res.render("users/list", {
       title: "Registered Users",
       users,
