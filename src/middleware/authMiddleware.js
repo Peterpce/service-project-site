@@ -4,7 +4,7 @@
  */
 export function requireLogin(req, res, next) {
   if (!req.session.user) {
-    req.flash("error", "You must be logged in first.");
+    req.flash("message", "You must be logged in first."); // ✅ Fixed key
     return res.redirect("/login");
   }
   next();
@@ -17,13 +17,13 @@ export function requireLogin(req, res, next) {
 export function requireRole(role) {
   return (req, res, next) => {
     if (!req.session.user) {
-      req.flash("error", "You must be logged in first.");
+      req.flash("message", "You must be logged in first."); // ✅ Fixed key
       return res.redirect("/login");
     }
 
     if (req.session.user.role !== role) {
-      req.flash("error", "Unauthorized access.");
-      return res.redirect("/dashboard"); // Adjust path if your home/dashboard varies
+      req.flash("message", "Unauthorized access."); // ✅ Fixed key
+      return res.redirect("/dashboard"); 
     }
 
     next();

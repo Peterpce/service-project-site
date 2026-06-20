@@ -1,37 +1,20 @@
-<%- include("../partials/header", { title: title }) %>
+<%- include("../partials/header", { title: title }) %>[cite: 16]
 
-<main class="container">
+<main class="container">[cite: 16]
 
-  <section class="page-header">
-    <h1>Edit Category</h1>
-    <p>Update category information below.</p>
-  </section>
-
-  <!-- FLASH / ERROR MESSAGES -->
-  <% if (errors && errors.length > 0) { %>
-    <div class="alert error">
-      <% errors.forEach(err => { %>
-        <p><%= err %></p>
-      <% }) %>
-    </div>
-  <% } %>
-
-  <% if (success && success.length > 0) { %>
-    <div class="alert success">
-      <% success.forEach(msg => { %>
-        <p><%= msg %></p>
-      <% }) %>
-    </div>
-  <% } %>
+  <section class="page-header">[cite: 16]
+    <h1>Edit Category</h1>[cite: 16]
+    <p>Update category information below.</p>[cite: 16]
+  </section>[cite: 16]
 
   <!-- FORM -->
-  <section class="form-container">
+  <section class="form-container">[cite: 16]
 
-    <form action="/categories/edit/<%= category.id %>" method="POST">
+    <form action="/categories/edit/<%= category.id %>" method="POST">[cite: 16]
 
       <!-- Name -->
-      <div class="form-group">
-        <label for="name">Category Name</label>
+      <div class="form-group">[cite: 16]
+        <label for="name">Category Name</label>[cite: 16]
         <input
           type="text"
           id="name"
@@ -39,29 +22,29 @@
           value="<%= category.name %>"
           required
           minlength="2"
-        >
-      </div>
+        >[cite: 16]
+      </div>[cite: 16]
 
       <!-- Description -->
-      <div class="form-group">
-        <label for="description">Description</label>
+      <div class="form-group">[cite: 16]
+        <label for="description">Description</label>[cite: 16]
         <textarea
           id="description"
           name="description"
           required
           minlength="5"
-        ><%= category.description %></textarea>
-      </div>
+        ><%= category.description %></textarea>[cite: 16]
+      </div>[cite: 16]
 
       <!-- Submit -->
-      <button type="submit" class="btn">
-        Update Category
-      </button>
+      <button type="submit" class="btn">[cite: 16]
+        Update Category[cite: 16]
+      </button>[cite: 16]
 
-    </form>
+    </form>[cite: 16]
 
-  </section>
+  </section>[cite: 16]
 
-</main>
+</main>[cite: 16]
 
-<%- include("../partials/footer") %>
+<%- include("../partials/footer") %>[cite: 16]

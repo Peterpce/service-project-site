@@ -1,37 +1,20 @@
-<%- include("../partials/header", { title: title }) %>
+<%- include("../partials/header", { title: title }) %>[cite: 14]
 
-<main class="container">
+<main class="container">[cite: 14]
 
-  <section class="page-header">
-    <h1>Create Category</h1>
-    <p>Add a new service project category.</p>
-  </section>
-
-  <!-- FLASH MESSAGES -->
-  <% if (error && error.length > 0) { %>
-    <div class="alert error">
-      <% error.forEach(err => { %>
-        <p><%= err %></p>
-      <% }) %>
-    </div>
-  <% } %>
-
-  <% if (success && success.length > 0) { %>
-    <div class="alert success">
-      <% success.forEach(msg => { %>
-        <p><%= msg %></p>
-      <% }) %>
-    </div>
-  <% } %>
+  <section class="page-header">[cite: 14]
+    <h1>Create Category</h1>[cite: 14]
+    <p>Add a new service project category.</p>[cite: 14]
+  </section>[cite: 14]
 
   <!-- FORM -->
-  <section class="form-container">
+  <section class="form-container">[cite: 14]
 
-    <form action="/categories/create" method="POST">
+    <form action="/categories/create" method="POST">[cite: 14]
 
       <!-- Name -->
-      <div class="form-group">
-        <label for="name">Category Name</label>
+      <div class="form-group">[cite: 14]
+        <label for="name">Category Name</label>[cite: 14]
         <input
           type="text"
           id="name"
@@ -39,30 +22,30 @@
           required
           minlength="2"
           placeholder="Enter category name"
-        >
-      </div>
+        >[cite: 14]
+      </div>[cite: 14]
 
       <!-- Description -->
-      <div class="form-group">
-        <label for="description">Description</label>
+      <div class="form-group">[cite: 14]
+        <label for="description">Description</label>[cite: 14]
         <textarea
           id="description"
           name="description"
           required
           minlength="5"
           placeholder="Enter category description"
-        ></textarea>
-      </div>
+        ></textarea>[cite: 14]
+      </div>[cite: 14]
 
       <!-- Submit -->
-      <button type="submit" class="btn">
-        Create Category
-      </button>
+      <button type="submit" class="btn">[cite: 14]
+        Create Category[cite: 14]
+      </button>[cite: 14]
 
-    </form>
+    </form>[cite: 14]
 
-  </section>
+  </section>[cite: 14]
 
-</main>
+</main>[cite: 14]
 
-<%- include("../partials/footer") %>
+<%- include("../partials/footer") %>[cite: 14]

@@ -6,7 +6,6 @@
         <h1>Organizations</h1>
         <p>Discover organizations dedicated to making a positive impact in communities.</p>
 
-        <!-- CREATE BUTTON (NEW FOR CRUD) -->
         <a href="/organizations/create" class="btn">+ Add Organization</a>
     </section>
 
@@ -15,13 +14,16 @@
         <% organizations.forEach(org => { %>
             <div class="card">
 
-                <img src="<%= org.logo %>" alt="<%= org.name %>" style="width:80px; height:auto;">
+                <% if (org.logo) { %>
+                    <img src="<%= org.logo %>" alt="<%= org.name %>" style="width:80px; height:auto;">
+                <% } else { %>
+                    <img src="/images/default.png" alt="No Logo" style="width:80px; height:auto;">
+                <% } %>
 
                 <h2><%= org.name %></h2>
 
                 <p><%= org.description %></p>
 
-                <!-- ACTION BUTTONS -->
                 <a href="/organizations/<%= org.id %>">View</a>
                 <a href="/organizations/edit/<%= org.id %>">Edit</a>
 

@@ -9,7 +9,6 @@
 
   <section class="detail-card">
 
-    <!-- Logo -->
     <div class="detail-image">
       <% if (organization.logo) { %>
         <img src="<%= organization.logo %>" alt="<%= organization.name %>" style="width:120px; height:auto;">
@@ -18,7 +17,6 @@
       <% } %>
     </div>
 
-    <!-- Info -->
     <div class="detail-info">
       <h2>Name</h2>
       <p><%= organization.name %></p>
@@ -29,7 +27,6 @@
 
   </section>
 
-  <!-- ACTION BUTTONS -->
   <section class="actions">
 
     <a href="/organizations/edit/<%= organization.id %>" class="btn">

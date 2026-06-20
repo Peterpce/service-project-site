@@ -9,20 +9,20 @@ export async function registerUser(req, res, next) {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      req.flash("error", "All fields are required");
+      req.flash("message", "All fields are required"); // ✅ Aligned to match route view key
       return res.redirect("/register");
     }
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      req.flash("error", "User already exists");
+      req.flash("message", "User already exists"); // ✅ Aligned to match route view key
       return res.redirect("/register");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await createUser(name, email, hashedPassword, "user");
 
-    req.flash("success", "Registration successful! Please login.");
+    req.flash("message", "Registration successful! Please login."); // ✅ Aligned to match route view key
     
     req.session.save(() => {
       res.redirect("/login");
@@ -40,21 +40,21 @@ export async function loginUser(req, res, next) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      req.flash("error", "Email and password are required");
+      req.flash("message", "Email and password are required"); // ✅ Aligned to match route view key
       return res.redirect("/login");
     }
 
     const user = await findUserByEmail(email);
 
     if (!user) {
-      req.flash("error", "Invalid credentials");
+      req.flash("message", "Invalid credentials"); // ✅ Aligned to match route view key
       return res.redirect("/login");
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      req.flash("error", "Invalid credentials");
+      req.flash("message", "Invalid credentials"); // ✅ Aligned to match route view key
       return res.redirect("/login");
     }
 
@@ -65,7 +65,7 @@ export async function loginUser(req, res, next) {
       role: user.role
     };
 
-    req.flash("success", "Login successful! Welcome back.");
+    req.flash("message", "Login successful! Welcome back."); // ✅ Aligned to match route view key
 
     req.session.save(() => {
       res.redirect("/dashboard"); 
@@ -80,7 +80,7 @@ export async function loginUser(req, res, next) {
  * LOGOUT USER
  */
 export function logoutUser(req, res) {
-  req.flash("success", "You have been logged out successfully.");
+  req.flash("message", "You have been logged out successfully."); // ✅ Aligned to match route view key
 
   req.session.user = null;
   req.session.save((err) => {

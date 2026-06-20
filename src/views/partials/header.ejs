@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><%= title %> | Community Service Hub</title>
-
     <link rel="stylesheet" href="/css/main.css">
 </head>
-
 <body>
 
 <header>
     <div class="container nav-container">
-
         <h1 class="logo">Community Service Hub</h1>
-
         <nav>
             <ul class="nav-links">
-
                 <li><a href="/">Home</a></li>
                 <li><a href="/organizations">Organizations</a></li>
                 <li><a href="/projects">Projects</a></li>
@@ -38,27 +32,14 @@
                     <li><a href="/login">Login</a></li>
                     <li><a href="/register">Register</a></li>
                 <% } %>
-
             </ul>
         </nav>
-
     </div>
 </header>
 
 <div class="container alert-container">
-    <% if (locals.notice) { %>
-        <div class="alert alert-notice"><%= notice %></div>
-    <% } %>
-
-    <% if (locals.error) { %>
-        <div class="alert alert-error"><%= error %></div>
-    <% } %>
-
-    <% if (locals.success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-
-    <% if (locals.message) { %>
-        <div class="alert alert-info"><%= message %></div>
-    <% } %>
+    <% if (locals.notice) { %> <div class="alert alert-notice"><%= notice %></div> <% } %>
+    <% if (locals.error) { %> <div class="alert alert-error"><%= error %></div> <% } %>
+    <% if (locals.success) { %> <div class="alert alert-success"><%= success %></div> <% } %>
+    <% if (locals.message) { %> <div class="alert alert-info"><%= message %></div> <% } %>
 </div>

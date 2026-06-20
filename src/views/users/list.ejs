@@ -1,42 +1,37 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header') %>[cite: 13]
 
-<h1>Registered Users</h1>
+<h1>Registered Users</h1>[cite: 13]
 
-<!-- Flash message -->
-<% if (message && message.length > 0) { %>
-  <p style="color:red;"><%= message %></p>
-<% } %>
+<table border="1" cellpadding="10">[cite: 13]
+  <thead>[cite: 13]
+    <tr>[cite: 13]
+      <th>ID</th>[cite: 13]
+      <th>Name</th>[cite: 13]
+      <th>Email</th>[cite: 13]
+      <th>Role</th>[cite: 13]
+    </tr>[cite: 13]
+  </thead>[cite: 13]
 
-<table border="1" cellpadding="10">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-    </tr>
-  </thead>
+  <tbody>[cite: 13]
+    <% if (users && users.length > 0) { %>[cite: 13]
+      <% users.forEach(user => { %>[cite: 13]
+        <tr>[cite: 13]
+          <td><%= user.id %></td>[cite: 13]
+          <td><%= user.name %></td>[cite: 13]
+          <td><%= user.email %></td>[cite: 13]
+          <td><%= user.role %></td>[cite: 13]
+        </tr>[cite: 13]
+      <% }) %>[cite: 13]
+    <% } else { %>[cite: 13]
+      <tr>[cite: 13]
+        <td colspan="4">No users found</td>[cite: 13]
+      </tr>[cite: 13]
+    <% } %>[cite: 13]
+  </tbody>[cite: 13]
+</table>[cite: 13]
 
-  <tbody>
-    <% if (users && users.length > 0) { %>
-      <% users.forEach(user => { %>
-        <tr>
-          <td><%= user.id %></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.role %></td>
-        </tr>
-      <% }) %>
-    <% } else { %>
-      <tr>
-        <td colspan="4">No users found</td>
-      </tr>
-    <% } %>
-  </tbody>
-</table>
+<br />[cite: 13]
 
-<br />
+<a href="/dashboard">← Back to Dashboard</a>[cite: 13]
 
-<a href="/dashboard">← Back to Dashboard</a>
-
-<%- include('../partials/footer') %>
+<%- include('../partials/footer') %>[cite: 13]

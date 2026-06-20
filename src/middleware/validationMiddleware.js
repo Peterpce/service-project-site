@@ -1,5 +1,3 @@
-// validationMiddleware.js
-
 // Validate Organization
 export const validateOrganization = (req, res, next) => {
   const { name, description } = req.body;
@@ -15,7 +13,7 @@ export const validateOrganization = (req, res, next) => {
   }
 
   if (errors.length > 0) {
-    req.flash("error", errors);
+    req.flash("message", errors[0]); // ✅ Fixed key & passed string for single message rendering
     return res.redirect("back");
   }
 
@@ -37,7 +35,7 @@ export const validateProject = (req, res, next) => {
   }
 
   if (errors.length > 0) {
-    req.flash("error", errors);
+    req.flash("message", errors[0]); // ✅ Fixed key & passed string for single message rendering
     return res.redirect("back");
   }
 
@@ -55,7 +53,7 @@ export const validateCategory = (req, res, next) => {
   }
 
   if (errors.length > 0) {
-    req.flash("error", errors);
+    req.flash("message", errors[0]); // ✅ Fixed key & passed string for single message rendering
     return res.redirect("back");
   }
 
